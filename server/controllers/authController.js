@@ -58,15 +58,15 @@ const registerController = async (req, res) => {
 };
 
 const loginController = async (req, res) => {
-    try{
+    try {
         const { email, password } = req.body;
-        let user = await User.findOne({ email });
+        let user = await Users.findOne({ email });
 
         // Validations
         if (!email || !password) {
-          return res.status(400).json({
-            error: "Please fill all the fields",
-          });
+            return res.status(400).json({
+                error: "Please fill all the fields",
+            });
         }
 
         // Check if user exists
@@ -79,17 +79,28 @@ const loginController = async (req, res) => {
         // Check password
         const isMatch = await comparePassword(password, user.password);
 
-        if(isMatch){
+        if (isMatch) {
+            // Create JWT token
+            const token = await jwt.sign(
+                { 
+                    _id: user._id, 
+                    name: user.name, 
+                    email: user.email 
+                }, 
+                process.env.JWT_SECRET, {
+                expiresIn: "7d",
+            });
             return res.status(200).json({
-              success: true,
-              message: "Login successful🥳🎉",
-              user: user,
+                success: true,
+                message: "Login successful🥳🎉",
+                user: user,
+                token: token,
             });
         }
-        else{
+        else {
             return res.status(400).json({
-              success: false,
-              error: "⚠️Invalid credentials⚠️",
+                success: false,
+                error: "⚠️Invalid credentials⚠️",
             });
         }
 
@@ -103,6 +114,14 @@ const loginController = async (req, res) => {
     }
 }
 
+// Test Controller
+const testController = (req, res) => {
+    return res.json({
+        success: true,
+        message: "Protected route",
+        user: req.user,
+    });
+};
 
 
-module.exports = { registerController, loginController };
+module.exports = { registerController, loginController, testController };
