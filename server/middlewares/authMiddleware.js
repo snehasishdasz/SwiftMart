@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken");
+const Users = require("../models/userModel");
 
-function requireSignin(req, res, next) {
+const requireSignin = (req, res, next)=> {
   try {
     const token = req.headers.authorization;
     if (!token) {
       return res
         .status(401)
-        .json({ error: "Access denied. No token provided." });
+        .json({ error: "Access denied" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -18,4 +19,21 @@ function requireSignin(req, res, next) {
   }
 }
 
-module.exports = { requireSignin };
+// Middleware to check if the user is an admin
+const isAdmin = async (req, res, next) =>{
+  try{
+    const user = await Users.findById(req.user._id);
+    if(user.role !== 1){
+      return res.status(403).json({ error: "Access denied - Admins only" });
+    }
+    else{
+      next();
+    }
+  }
+  catch(error){
+    console.error("Admin check failed:", error.message);
+    res.status(403).json({ error: "Forbidden - Admin access required" });
+  }
+}
+
+module.exports = { requireSignin, isAdmin };

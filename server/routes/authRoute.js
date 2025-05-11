@@ -4,7 +4,7 @@ const {
   loginController,
   testController,
 } = require("../controllers/authController");
-const { requireSignin } = require("../middlewares/authMiddleware");
+const { requireSignin, isAdmin } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
@@ -15,6 +15,6 @@ router.post("/register", registerController);
 router.post("/login", loginController);
 
 //test route
-router.get("/test",requireSignin, testController);
+router.get("/test",requireSignin,isAdmin, testController);
 
 module.exports = router;
