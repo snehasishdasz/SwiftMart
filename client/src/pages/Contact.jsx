@@ -28,7 +28,7 @@ const Contact = () => {
   };
 
   return (
-    <Layout>
+    <Layout title={"Contact Us - SwiftMart"}>
       <div className="min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-4 px-2">
         <div className="bg-white rounded-xl shadow-lg flex flex-col md:flex-row w-full max-w-3xl overflow-hidden">
           {/* Left Side */}

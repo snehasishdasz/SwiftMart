@@ -3,7 +3,7 @@ import Layout from "../components/Layout/Layout";
 
 const Policy = () => {
   return (
-    <Layout>
+    <Layout title={"Privacy Policy - SwiftMart"}>
       <div className="min-h-[70vh] flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-100 to-white px-4 py-10">
         {/* Hero Section */}
         <div className="flex flex-col items-center mb-10">

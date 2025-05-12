@@ -4,7 +4,7 @@ import Layout from "../components/Layout/Layout";
 
 const PagenotFound = () => {
   return (
-    <Layout>
+    <Layout title={"Page Not Found - SwiftMart"}>
       <div className="min-h-[70vh] flex items-center justify-center bg-white dark:bg-[#0f172a] px-4">
         <div className="w-full max-w-xl mx-auto flex flex-col items-center">
           {/* Modern flat illustration */}

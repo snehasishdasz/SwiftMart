@@ -3,7 +3,7 @@ import Layout from "../components/Layout/Layout";
 
 const About = () => {
   return (
-    <Layout>
+    <Layout title={"About Us - SwiftMart"}>
       <div className="min-h-[70vh] flex flex-col items-center justify-center bg-gradient-to-b from-indigo-50 to-white px-4 py-10">
         {/* Hero Section */}
         <div className="text-center mb-8">
