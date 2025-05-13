@@ -2,6 +2,7 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Helmet } from "react-helmet";
+ import { Flip, ToastContainer} from "react-toastify";
 
 const Layout = ({ children,title, description, keywords, author }) => {
   return (
@@ -14,7 +15,22 @@ const Layout = ({ children,title, description, keywords, author }) => {
         <title>{title}</title>
       </Helmet>
       <Header />
-      <main className="flex-grow pt-16 px-4">{children}</main>
+      <main className="flex-grow pt-16 px-4">
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Flip}
+        />
+        {children}
+      </main>
       <Footer />
     </div>
   );
