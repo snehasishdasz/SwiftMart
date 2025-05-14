@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { HiOutlineShoppingCart, HiMenu, HiX } from "react-icons/hi";
+import { useAuth } from "../../context/auth";
+import { showSuccessToast, showErrorToast } from "../../utils/toastUtils";
+import { useNavigate } from "react-router-dom";
 
 const navLinkClass =
   "px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200";
@@ -9,7 +12,20 @@ const inactiveClass = "text-gray-700 dark:text-gray-200 hover:text-blue-500";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+   const navigate = useNavigate();
 
+  const handleLogout =()=>{
+    localStorage.removeItem("auth");
+    setAuth({
+      ...auth,
+      user: null,
+      token: "",
+    });
+    showSuccessToast("Logout successfully🔥");
+    navigate("/login");
+  }
+
+  const [auth,setAuth] = useAuth();
   return (
     <header className="bg-white dark:bg-[#111827] shadow-sm fixed w-full z-20 top-0 left-0">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,22 +57,44 @@ const Header = () => {
             >
               Category
             </NavLink>
-            <NavLink
-              to="/register"
-              className={({ isActive }) =>
-                `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
-              }
-            >
-              Register
-            </NavLink>
-            <NavLink
-              to="/login"
-              className={({ isActive }) =>
-                `${navLinkClass} ${isActive ? activeClass : inactiveClass}`
-              }
-            >
-              Login
-            </NavLink>
+            {!auth.user ? (
+              <>
+                <NavLink
+                  to="/register"
+                  className={({ isActive }) =>
+                    `block bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 py-1.5 rounded transition-colors duration-200 text-sm shadow-sm my-1 ${
+                      isActive ? "ring-2 ring-blue-400" : ""
+                    }`
+                  }
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Register
+                </NavLink>
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    `block bg-green-500 hover:bg-green-600 text-white font-medium px-3 py-1.5 rounded transition-colors duration-200 text-sm shadow-sm my-1 ${
+                      isActive ? "ring-2 ring-green-400" : ""
+                    }`
+                  }
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Login
+                </NavLink>
+              </>
+            ) : (
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `${navLinkClass} ${
+                    isActive ? activeClass : inactiveClass
+                  } bg-red-500 hover:bg-red-600 hover:text-white text-white font-semibold px-3 py-2 rounded-md transition-colors duration-200`
+                }
+                onClick={handleLogout}
+              >
+                Logout
+              </NavLink>
+            )}
             <NavLink
               to="/cart"
               className={({ isActive }) =>
