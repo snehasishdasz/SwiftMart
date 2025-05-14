@@ -2,9 +2,9 @@ import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Helmet } from "react-helmet";
- import { Flip, ToastContainer} from "react-toastify";
+import { Toaster } from "react-hot-toast";
 
-const Layout = ({ children,title, description, keywords, author }) => {
+const Layout = ({ children, title, description, keywords, author }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Helmet>
@@ -16,19 +16,7 @@ const Layout = ({ children,title, description, keywords, author }) => {
       </Helmet>
       <Header />
       <main className="flex-grow pt-16 px-4">
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Flip}
-        />
+        <Toaster />
         {children}
       </main>
       <Footer />

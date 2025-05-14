@@ -1,7 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout";
+import { showSuccessToast, showErrorToast } from "../../utils/toastUtils";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
+  const[email, setEmail] = useState("");
+  const[password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try{
+      const res = await axios.post(
+        "http://localhost:8080/api/v1/auth/login",
+        {email,password},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        })
+        if(res.data.success){
+          showSuccessToast(res.data.message);
+          navigate("/");
+        }
+    }
+    catch (error) {
+      showErrorToast(error.response.data.message);
+      console.error("Login error:", error);
+    }
+  }
   return (
     <Layout title={"Login - SwiftMart"}>
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-indigo-100">
@@ -36,7 +65,7 @@ const Login = () => {
             <p className="text-xs text-slate-500 text-center mb-4">
               Welcome back to SwiftMart!
             </p>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleLogin}>
               <div>
                 <label className="block mb-1 text-xs font-medium text-slate-600">
                   Email
@@ -46,6 +75,8 @@ const Login = () => {
                   className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm bg-slate-50 focus:outline-none focus:border-indigo-400 transition"
                   placeholder="you@email.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div>
@@ -57,6 +88,8 @@ const Login = () => {
                   className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm bg-slate-50 focus:outline-none focus:border-indigo-400 transition"
                   placeholder="Password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <button

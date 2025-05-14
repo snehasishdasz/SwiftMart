@@ -29,7 +29,7 @@ const registerController = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({
                 success: false,
-                message: "⚠️ User already exists",
+                message: "User already exists",
             });
         }
 
@@ -100,7 +100,7 @@ const loginController = async (req, res) => {
         else {
             return res.status(400).json({
                 success: false,
-                error: "⚠️Invalid credentials⚠️",
+                message: "Invalid credentials",
             });
         }
 
